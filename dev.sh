@@ -11,4 +11,4 @@ if [[ ! -d "node_modules" ]]; then
 fi
 
 echo "[INFO] Running: bun run dev start"
-bun run dev start
+bun run dev start --rate-limit 10 --wait
