@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, "security/**"]
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
 
