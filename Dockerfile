@@ -1,17 +1,17 @@
-FROM oven/bun:1.2.19-alpine AS builder
+FROM node:24.22.1-alpine AS builder
 WORKDIR /app
 
-COPY ./package.json ./bun.lock ./
-RUN bun install --frozen-lockfile
+COPY ./package.json ./package-lock.json ./
+RUN npm ci --ignore-scripts
 
 COPY . .
-RUN bun run build
+RUN npm run build
 
-FROM oven/bun:1.2.19-alpine AS runner
+FROM node:24.22.1-alpine AS runner
 WORKDIR /app
 
-COPY ./package.json ./bun.lock ./
-RUN bun install --frozen-lockfile --production --ignore-scripts --no-cache
+COPY ./package.json ./package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 COPY --from=builder /app/dist ./dist
 
